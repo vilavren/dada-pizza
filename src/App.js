@@ -4,6 +4,8 @@ import Categories from './components/Categories'
 import Header from './components/Header'
 import Sort from './components/Sort'
 
+import pizzas from './assets/data/pizzas.json'
+
 function App() {
   return (
     <div className="App">
@@ -17,12 +19,13 @@ function App() {
             </div>
             <h2 className="content__title">Все пиццы</h2>
             <div className="content__items">
-              <Card title="Мексиканская" price={395} />
-              <Card />
-              <Card />
-              <Card />
-              <Card />
-              <Card />
+              {pizzas.map((pizza) => (
+                <Card
+                  title={pizza.title}
+                  price={pizza.price}
+                  image={pizza.imageUrl}
+                />
+              ))}
             </div>
           </div>
         </div>

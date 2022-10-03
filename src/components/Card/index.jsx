@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-function Card({ title = 'Чизбургер-пицца', price = 500 }) {
+function Card({ title, price, image }) {
   const [pizzaCount, setPizzaCount] = useState(0)
 
   const onClickHandler = () => {
@@ -9,11 +9,7 @@ function Card({ title = 'Чизбургер-пицца', price = 500 }) {
 
   return (
     <div className="pizza-block">
-      <img
-        className="pizza-block__image"
-        src="https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg"
-        alt="Pizza"
-      />
+      <img className="pizza-block__image" src={image} alt="Pizza" />
       <h4 className="pizza-block__title">{title}</h4>
       <div className="pizza-block__selector">
         <ul>
