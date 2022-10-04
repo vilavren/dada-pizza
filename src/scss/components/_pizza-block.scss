@@ -38,6 +38,8 @@
       li {
         padding: 8px;
         flex: 1;
+        transition: background $duration ease-in-out,
+          box-shadow $duration ease-in-out, border-radius $duration ease-in-out;
         cursor: pointer;
         font-weight: 600;
         font-size: 14px;
