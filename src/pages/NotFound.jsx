@@ -1,4 +1,4 @@
-import NotFound from '../components/NotFoundBlock'
+import NotFoundBlock from '../components/NotFoundBlock'
 
 function NotFound() {
   return (
