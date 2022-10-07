@@ -29,6 +29,8 @@ function Home() {
         {isloading
           ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
           : items.map((item) => <Card key={item.id} {...item} />)}
+        <Skeleton />
+        <Skeleton />
       </div>
     </>
   )
