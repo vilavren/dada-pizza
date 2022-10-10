@@ -5,7 +5,7 @@ import Skeleton from '../components/Card/Skeleton'
 import Categories from '../components/Categories'
 import Sort from '../components/Sort'
 
-function Home() {
+function Home({ searchValue }) {
   const [items, setItems] = useState([])
   const [isloading, setIsLoading] = useState(true)
   const [categoryId, setCategoryId] = useState(0)
@@ -20,9 +20,10 @@ function Home() {
     const sortBy = sortType.sortProperty.replace('-', '')
     const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc'
     const category = categoryId > 0 ? `category=${categoryId}` : ''
+    const search = searchValue ? `&search=${searchValue}` : ''
 
     fetch(
-      `https://633c28faf11701a65f7063c4.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}`
+      `https://633c28faf11701a65f7063c4.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}${search}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -30,7 +31,10 @@ function Home() {
         setIsLoading(false)
       })
     window.scrollTo(0, 0)
-  }, [categoryId, sortType])
+  }, [categoryId, sortType, searchValue])
+
+  const pizzas = items.map((item) => <Card key={item.id} {...item} />)
+  const skeleton = [...new Array(6)].map((_, index) => <Skeleton key={index} />)
 
   return (
     <div className="container">
@@ -42,11 +46,7 @@ function Home() {
         <Sort value={sortType} onChangeSort={(i) => setSortType(i)} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">
-        {isloading
-          ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-          : items.map((item) => <Card key={item.id} {...item} />)}
-      </div>
+      <div className="content__items">{isloading ? skeleton : pizzas}</div>
     </div>
   )
 }
