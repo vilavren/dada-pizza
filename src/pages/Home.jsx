@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import Card from '../components/Card'
 import Skeleton from '../components/Card/Skeleton'
 import Categories from '../components/Categories'
+import Pagination from '../components/Pagination'
 import Sort from '../components/Sort'
 
 function Home({ searchValue }) {
@@ -13,6 +14,7 @@ function Home({ searchValue }) {
     name: 'популярные',
     sortProperty: 'rating',
   })
+  const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
     setIsLoading(true)
@@ -23,7 +25,7 @@ function Home({ searchValue }) {
     const search = searchValue ? `&search=${searchValue}` : ''
 
     fetch(
-      `https://633c28faf11701a65f7063c4.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}${search}`
+      `https://633c28faf11701a65f7063c4.mockapi.io/items?page=${currentPage}&limit=4${category}&sortBy=${sortBy}&order=${order}${search}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -31,7 +33,7 @@ function Home({ searchValue }) {
         setIsLoading(false)
       })
     window.scrollTo(0, 0)
-  }, [categoryId, sortType, searchValue])
+  }, [categoryId, sortType, searchValue, currentPage])
 
   const pizzas = items.map((item) => <Card key={item.id} {...item} />)
   const skeleton = [...new Array(6)].map((_, index) => <Skeleton key={index} />)
@@ -47,6 +49,7 @@ function Home({ searchValue }) {
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isloading ? skeleton : pizzas}</div>
+      <Pagination onChangePage={(number) => setCurrentPage(number)} />
     </div>
   )
 }
