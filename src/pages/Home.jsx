@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { SearchContext } from '../App'
 
 import Card from '../components/Card'
 import Skeleton from '../components/Card/Skeleton'
@@ -6,7 +7,9 @@ import Categories from '../components/Categories'
 import Pagination from '../components/Pagination'
 import Sort from '../components/Sort'
 
-function Home({ searchValue }) {
+function Home() {
+  const { searchValue } = useContext(SearchContext)
+
   const [items, setItems] = useState([])
   const [isloading, setIsLoading] = useState(true)
   const [categoryId, setCategoryId] = useState(0)
