@@ -1,20 +1,23 @@
 import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { setSort } from '../../redux/slices/filterSlice'
 
-function Sort({ value, onChangeSort }) {
+const list = [
+  { name: 'популярные', sortProperty: 'rating' },
+  { name: 'cначала дороже', sortProperty: 'price' },
+  { name: 'cначала дешевле', sortProperty: '-price' },
+  { name: 'Я-А', sortProperty: 'title' },
+  { name: 'А-Я', sortProperty: '-title' },
+]
+
+function Sort() {
+  const dispatch = useDispatch()
+  const sort = useSelector((state) => state.filter.sort)
+
   const [open, setOpen] = useState(false)
-  const list = [
-    { name: 'популярные', sortProperty: 'rating' },
-    // { name: 'популярности asc', sortProperty: '-rating' },
 
-    { name: 'cначала дороже', sortProperty: 'price' },
-    { name: 'cначала дешевле', sortProperty: '-price' },
-
-    { name: 'Я-А', sortProperty: 'title' },
-    { name: 'А-Я', sortProperty: '-title' },
-  ]
-
-  const onSelectPopup = (index) => {
-    onChangeSort(index)
+  const onSelectPopup = (obj) => {
+    dispatch(setSort(obj))
     setOpen(false)
   }
   return (
@@ -38,7 +41,7 @@ function Sort({ value, onChangeSort }) {
             setOpen(!open)
           }}
         >
-          {value.name}
+          {sort.name}
         </span>
       </div>
       {open && (
@@ -49,7 +52,7 @@ function Sort({ value, onChangeSort }) {
                 key={index}
                 onClick={() => onSelectPopup(obj)}
                 className={
-                  value.sortProperty === obj.sortProperty ? 'active' : ''
+                  sort.sortProperty === obj.sortProperty ? 'active' : ''
                 }
               >
                 {obj.name}
