@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import axios from 'axios'
 
 import Card from '../components/Card'
 import Skeleton from '../components/Card/Skeleton'
@@ -35,14 +36,15 @@ function Home() {
     const category = categoryId > 0 ? `category=${categoryId}` : ''
     const search = searchValue ? `&search=${searchValue}` : ''
 
-    fetch(
-      `https://633c28faf11701a65f7063c4.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}&${search}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setItems(data)
+    axios
+      .get(
+        `https://633c28faf11701a65f7063c4.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}&${search}`
+      )
+      .then((res) => {
+        setItems(res.data)
         setIsLoading(false)
       })
+
     window.scrollTo(0, 0)
   }, [categoryId, sortType, searchValue, currentPage])
 
