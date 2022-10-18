@@ -1,6 +1,5 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import axios from 'axios'
 
 import Card from '../components/Card'
 import Skeleton from '../components/Card/Skeleton'
@@ -9,21 +8,20 @@ import Pagination from '../components/Pagination'
 import Sort from '../components/Sort'
 
 import { setCategoryId, setCurrentPage } from '../redux/slices/filterSlice'
+import { fetchPizzas } from '../redux/slices/pizzaSlice'
 
 import { SearchContext } from '../App'
 
 function Home() {
   const dispatch = useDispatch()
+
+  const { items, status } = useSelector((state) => state.pizza)
   const { categoryId, sort, currentPage } = useSelector((state) => state.filter)
   const sortType = sort.sortProperty
 
   const { searchValue } = useContext(SearchContext)
 
-  const [items, setItems] = useState([])
-  const [isloading, setIsLoading] = useState(true)
-
   const onChangeCategory = (id) => {
-    console.log(id)
     dispatch(setCategoryId(id))
   }
 
@@ -31,24 +29,27 @@ function Home() {
     dispatch(setCurrentPage(number))
   }
 
-  useEffect(() => {
-    setIsLoading(true)
-
+  const getPizzas = async () => {
     const sortBy = sortType.replace('-', '')
     const order = sortType.includes('-') ? 'asc' : 'desc'
     const category = categoryId > 0 ? `category=${categoryId}` : ''
     const search = searchValue ? `&search=${searchValue}` : ''
 
-    axios
-      .get(
-        `https://633c28faf11701a65f7063c4.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}&${search}`
-      )
-      .then((res) => {
-        setItems(res.data)
-        setIsLoading(false)
+    dispatch(
+      fetchPizzas({
+        currentPage,
+        category,
+        sortBy,
+        order,
+        search,
       })
+    )
 
     window.scrollTo(0, 0)
+  }
+
+  useEffect(() => {
+    getPizzas()
   }, [categoryId, sortType, searchValue, currentPage])
 
   const pizzas = items.map((item) => <Card key={item.id} {...item} />)
@@ -64,7 +65,18 @@ function Home() {
         <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">{isloading ? skeleton : pizzas}</div>
+      {status === 'error' ? (
+        <div className="content__error-info">
+          <h2>Произошла ошибка 😕</h2>
+          <p>
+            К сожалению, не удалось получить пиццы. Повторите попытку позднее.
+          </p>
+        </div>
+      ) : (
+        <div className="content__items">
+          {status === 'loading' ? skeleton : pizzas}
+        </div>
+      )}
       <Pagination currentPage={currentPage} onChangePage={onChangePage} />
     </div>
   )

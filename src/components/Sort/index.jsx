@@ -26,7 +26,6 @@ function Sort() {
     const handleClickOutside = (e) => {
       if (!e.path.includes(sortRef.current)) {
         setOpen(false)
-        console.log('ntnc')
       }
     }
 
