@@ -7,19 +7,20 @@ import Categories from '../components/Categories'
 import Pagination from '../components/Pagination'
 import Sort from '../components/Sort'
 
-import { setCategoryId, setCurrentPage } from '../redux/slices/filterSlice'
-import { fetchPizzas } from '../redux/slices/pizzaSlice'
-
-import { SearchContext } from '../App'
+import {
+  selectFilter,
+  setCategoryId,
+  setCurrentPage,
+} from '../redux/slices/filterSlice'
+import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice'
 
 function Home() {
   const dispatch = useDispatch()
 
-  const { items, status } = useSelector((state) => state.pizza)
-  const { categoryId, sort, currentPage } = useSelector((state) => state.filter)
+  const { items, status } = useSelector(selectPizzaData)
+  const { categoryId, sort, currentPage, searchValue } =
+    useSelector(selectFilter)
   const sortType = sort.sortProperty
-
-  const { searchValue } = useContext(SearchContext)
 
   const onChangeCategory = (id) => {
     dispatch(setCategoryId(id))
