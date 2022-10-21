@@ -1,5 +1,6 @@
-import { useContext, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import Card from '../components/Card'
 import Skeleton from '../components/Card/Skeleton'
@@ -53,7 +54,11 @@ function Home() {
     getPizzas()
   }, [categoryId, sortType, searchValue, currentPage])
 
-  const pizzas = items.map((item) => <Card key={item.id} {...item} />)
+  const pizzas = items.map((item) => (
+    <Link key={item.id} to={`/pizza/${item.id}`}>
+      <Card {...item} />
+    </Link>
+  ))
   const skeleton = [...new Array(6)].map((_, index) => <Skeleton key={index} />)
 
   return (
