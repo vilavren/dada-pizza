@@ -15,7 +15,7 @@ import {
 } from '../redux/slices/filterSlice'
 import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice'
 
-function Home() {
+const Home: React.FC = () => {
   const dispatch = useDispatch()
 
   const { items, status } = useSelector(selectPizzaData)
@@ -23,12 +23,12 @@ function Home() {
     useSelector(selectFilter)
   const sortType = sort.sortProperty
 
-  const onChangeCategory = (id) => {
-    dispatch(setCategoryId(id))
+  const onChangeCategory = (index: number) => {
+    dispatch(setCategoryId(index))
   }
 
-  const onChangePage = (number) => {
-    dispatch(setCurrentPage(number))
+  const onChangePage = (page: number) => {
+    dispatch(setCurrentPage(page))
   }
 
   const getPizzas = async () => {
@@ -38,6 +38,7 @@ function Home() {
     const search = searchValue ? `&search=${searchValue}` : ''
 
     dispatch(
+      // @ts-ignore
       fetchPizzas({
         currentPage,
         category,
@@ -54,7 +55,7 @@ function Home() {
     getPizzas()
   }, [categoryId, sortType, searchValue, currentPage])
 
-  const pizzas = items.map((item) => (
+  const pizzas = items.map((item: any) => (
     <Link key={item.id} to={`/pizza/${item.id}`}>
       <Card {...item} />
     </Link>
@@ -64,10 +65,7 @@ function Home() {
   return (
     <div className="container">
       <div className="content__top">
-        <Categories
-          value={categoryId}
-          onChangeCategory={(i) => onChangeCategory(i)}
-        />
+        <Categories value={categoryId} onChangeCategory={onChangeCategory} />
         <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>

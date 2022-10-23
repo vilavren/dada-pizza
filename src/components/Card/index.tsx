@@ -3,7 +3,23 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { addItem, selectCartItemById } from '../../redux/slices/cartSlice'
 
-function Card({ id, title, price, imageUrl, sizes, types }) {
+type CardProps = {
+  id: string
+  title: string
+  price: number
+  imageUrl: string
+  sizes: number[]
+  types: number[]
+}
+
+const Card: React.FC<CardProps> = ({
+  id,
+  title,
+  price,
+  imageUrl,
+  sizes,
+  types,
+}) => {
   const typeNames = ['тонкое', 'традиционное']
   const [activeType, setActiveType] = useState(0)
   const [activeSize, setActiveSize] = useState(0)
