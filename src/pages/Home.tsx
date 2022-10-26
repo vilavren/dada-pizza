@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 import Card from '../components/Card'
 import Skeleton from '../components/Card/Skeleton'
@@ -14,9 +13,10 @@ import {
   setCurrentPage,
 } from '../redux/slices/filterSlice'
 import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice'
+import { useAppDispatch } from '../redux/store'
 
 const Home: React.FC = () => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const { items, status } = useSelector(selectPizzaData)
   const { categoryId, sort, currentPage, searchValue } =
@@ -38,9 +38,8 @@ const Home: React.FC = () => {
     const search = searchValue ? `&search=${searchValue}` : ''
 
     dispatch(
-      // @ts-ignore
       fetchPizzas({
-        currentPage,
+        currentPage: String(currentPage),
         category,
         sortBy,
         order,
@@ -55,11 +54,7 @@ const Home: React.FC = () => {
     getPizzas()
   }, [categoryId, sortType, searchValue, currentPage])
 
-  const pizzas = items.map((item: any) => (
-    <Link key={item.id} to={`/pizza/${item.id}`}>
-      <Card {...item} />
-    </Link>
-  ))
+  const pizzas = items.map((item: any) => <Card {...item} />)
   const skeleton = [...new Array(6)].map((_, index) => <Skeleton key={index} />)
 
   return (
