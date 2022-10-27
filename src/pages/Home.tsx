@@ -6,13 +6,10 @@ import Skeleton from '../components/Card/Skeleton'
 import Categories from '../components/Categories'
 import Pagination from '../components/Pagination'
 import Sort from '../components/Sort'
-
-import {
-  selectFilter,
-  setCategoryId,
-  setCurrentPage,
-} from '../redux/slices/filterSlice'
-import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice'
+import { selectFilter } from '../redux/filter/selectors'
+import { setCategoryId, setCurrentPage } from '../redux/filter/slice'
+import { fetchPizzas } from '../redux/pizza/asyncActions'
+import { selectPizzaData } from '../redux/pizza/selectors'
 import { useAppDispatch } from '../redux/store'
 
 const Home: React.FC = () => {
