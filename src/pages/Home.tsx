@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
 import Card from '../components/Card'
@@ -23,9 +23,9 @@ const Home: React.FC = () => {
     useSelector(selectFilter)
   const sortType = sort.sortProperty
 
-  const onChangeCategory = (index: number) => {
+  const onChangeCategory = useCallback((index: number) => {
     dispatch(setCategoryId(index))
-  }
+  }, [])
 
   const onChangePage = (page: number) => {
     dispatch(setCurrentPage(page))
@@ -54,14 +54,14 @@ const Home: React.FC = () => {
     getPizzas()
   }, [categoryId, sortType, searchValue, currentPage])
 
-  const pizzas = items.map((item: any) => <Card {...item} />)
+  const pizzas = items.map((item: any) => <Card key={item.id} {...item} />)
   const skeleton = [...new Array(6)].map((_, index) => <Skeleton key={index} />)
 
   return (
     <div className="container">
       <div className="content__top">
         <Categories value={categoryId} onChangeCategory={onChangeCategory} />
-        <Sort />
+        <Sort value={sort} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       {status === 'error' ? (
