@@ -1,11 +1,7 @@
 import React, { useCallback, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
-import Card from '../components/Card'
-import Skeleton from '../components/Card/Skeleton'
-import Categories from '../components/Categories'
-import Pagination from '../components/Pagination'
-import Sort from '../components/Sort'
+import { Card, Skeleton, Categories, Pagination, Sort } from '../components'
 import { selectFilter } from '../redux/filter/selectors'
 import { setCategoryId, setCurrentPage } from '../redux/filter/slice'
 import { fetchPizzas } from '../redux/pizza/asyncActions'
