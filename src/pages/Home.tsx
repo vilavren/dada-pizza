@@ -69,7 +69,7 @@ const Home: React.FC = () => {
           {status === 'loading' ? skeleton : pizzas}
         </div>
       )}
-      <Pagination currentPage={currentPage} onChangePage={onChangePage} />
+      {/* <Pagination currentPage={currentPage} onChangePage={onChangePage} /> */}
     </div>
   )
 }
